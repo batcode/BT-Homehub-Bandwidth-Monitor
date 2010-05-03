@@ -93,7 +93,7 @@ plot((x[-N:]-start_of_month)/xunit['seconds'], (y[-N:]-use_at_start_of_month)/yu
 plot([0, seconds_in_the_month/xunit['seconds']], [0, quota/yunit['MBs']], 'r')
 xlim([0, 1.1*(x[-1]-start_of_month)/xunit['seconds']])
 #ylim([0, y[-1]-use_at_start_of_month])
-ylim([0, 1.1*quota_rate*(x[-1]-start_of_month)/yunit['MBs']])
+ylim([0, max([1.1*quota_rate*(x[-1]-start_of_month), y[-1]-use_at_start_of_month])/yunit['MBs']])
 xlabel('Time/%s' % xunit['name'])
 ylabel('Data/%s' % yunit['name'])
 
