@@ -1,0 +1,49 @@
+BT Homehub Bandwidth Monitor
+============================
+
+This is a simple, linear, and fairly crude programme to log in to the BT Homehub, extract information including the used up- and down-stream data, and append this information to a comma-delimited file.
+
+A short script to plot this data is included.  An example of a plot which can be generated is included as example_plot.png.
+
+This programme was written for Linux (and should work fine on Mac) but should run on Windows with some modifications.  If there is any interest, then I will consider making these changes.
+
+Installation instructions (for Linux) are given below.
+
+
+Some information
+----------------
+
+A configuration file should be placed in ~/.bthomehubmonitor/options
+
+The options file is very crude and consists of three parameters specified in the form "name=value", each on a separate, consecutive line.  The file named "options" is a working example.
+
+One of the options specifies a file which stores the password used to log in to the BT Homehub.  By default this is ~/bthomehubmonitor/password, and this should contain the password in plain-text.
+
+The programme log.py should be run periodically, for example with the following line in the crontab:
+
+*/5 *  *  *  * python ~/git/BT-Homehub-Bandwidth-Monitor/log.py
+
+This line will log the used data every 5 minutes.
+
+Installation instructions
+-------------------------
+Run the following commands in a terminal.  You may copy-and-paste.
+
+cd ~
+mkdir .bthomehubmonitor/
+mkdir git
+cd git
+git clone git@github.com:batcode/BT-Homehub-Bandwidth-Monitor.git
+cd BT-Homehub-Bandwidth-Monitor
+cp options ~/.bthomehubmonitor/
+echo PASSWORD > ~/.bthomehubmonitor/password
+
+where, instead of PASSWORD, you would type the password you use to log in to the BT Homehub.
+
+Finally, run "crontab -e" and add the line "*/5 *  *  *  * python ~/git/BT-Homehub-Bandwidth-Monitor/log.py".
+
+To look at data which has been gathered, run the following command:
+
+python ~/git/BT-Homehub-Bandwidth-Monitor/plot.py
+
+
