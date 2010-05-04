@@ -93,7 +93,7 @@ plot((x[-N:]-start_of_month)/xunit['seconds'], (y[-N:]-use_at_start_of_month)/yu
 plot([0, seconds_in_the_month/xunit['seconds']], [0, quota/yunit['MBs']], 'r')
 xlim([0, 1.1*(x[-1]-start_of_month)/xunit['seconds']])
 #ylim([0, y[-1]-use_at_start_of_month])
-ylim([0, max([1.1*quota_rate*(x[-1]-start_of_month), y[-1]-use_at_start_of_month])/yunit['MBs']])
+ylim([0, 1.1*max([quota_rate*(x[-1]-start_of_month), y[-1]-use_at_start_of_month])/yunit['MBs']])
 xlabel('Time/%s' % xunit['name'])
 ylabel('Data/%s' % yunit['name'])
 
@@ -116,6 +116,12 @@ ylabel('Data/%s' % yunit['name'])
 #figure()
 #plot(x0, dy/dx)
 #ylim([0, 1.1*max(dy/dx)])
+
+MBs_over_quota_so_far = (y[-1]-use_at_start_of_month)-(quota_rate*(x[-1]-start_of_month))
+if MBs_over_quota_so_far > 0:
+	print 'You are %u MB over your quota so far this month' % MBs_over_quota_so_far
+else:
+	print 'You are %u MB bwlow your quota so far this month' % MBs_over_quota_so_far
 
 show()
 
