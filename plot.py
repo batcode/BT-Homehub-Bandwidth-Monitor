@@ -118,10 +118,13 @@ ylabel('Data/%s' % yunit['name'])
 #ylim([0, 1.1*max(dy/dx)])
 
 MBs_over_quota_so_far = (y[-1]-use_at_start_of_month)-(quota_rate*(x[-1]-start_of_month))
+seconds_to_wait = MBs_over_quota_so_far/quota_rate
 if MBs_over_quota_so_far > 0:
-	print 'You are %u MB over your quota so far this month' % MBs_over_quota_so_far
+	print 'You are %u %s over your quota so far this month' % (MBs_over_quota_so_far/yunit['MBs'], yunit['name'])
+	print 'If you use no data for %u %s, you will be within your quota' % (seconds_to_wait/xunit['seconds'], xunit['name'])
 else:
-	print 'You are %u MB bwlow your quota so far this month' % MBs_over_quota_so_far
+	print 'You are %u %s below your quota so far this month' % (MBs_over_quota_so_far/yunit['MBs'], yunit['name'])
+	print 'You are %u %s behind your quota' % (seconds_to_wait/xunit['seconds'], xunit['name'])
 
 show()
 
