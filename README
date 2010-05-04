@@ -46,4 +46,3 @@ To look at data which has been gathered, run the following command:
 
 python ~/git/BT-Homehub-Bandwidth-Monitor/plot.py
 
-
