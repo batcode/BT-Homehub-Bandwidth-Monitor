@@ -47,11 +47,19 @@ from pylab import *
 
 x = array(cols['stamp'])
 y = array(cols['dataTOTAL'])
+dy = y[1:] - y[:-1]
+dypos = dy * (dy > 0)
+ypos = zeros(len(y))
+ypos[0] = y[0]
+ypos[1:len(y)] = cumsum(dypos) + y[0]
+y = ypos[:]
+
+from datetime import datetime
+#start_of_month = 1272668400	# currently hard-coded for 2010 May
+start_of_month = int(datetime.strptime(datetime.now().strftime('%Y-%m-01'), '%Y-%m-%d').strftime('%s'))
 
 import time
 now = time.time()
-
-start_of_month = 1272668400	# currently hard-coded for 2010 May
 
 yesterday = now - 24*60*60
 quota = 10000.
