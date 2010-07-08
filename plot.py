@@ -54,7 +54,7 @@ ypos[0] = y[0]
 ypos[1:len(y)] = cumsum(dypos) + y[0]
 y = ypos[:]
 
-from datetime import datetime
+from datetime import datetime, date
 #start_of_month = 1272668400	# currently hard-coded for 2010 May
 start_of_month = int(datetime.strptime(datetime.now().strftime('%Y-%m-01'), '%Y-%m-%d').strftime('%s'))
 
@@ -63,10 +63,16 @@ now = time.time()
 
 yesterday = now - 24*60*60
 quota = 10000.
-seconds_in_the_month = 30*24*60*60
+
+import calendar
+seconds_in_the_month = calendar.mdays[date.today().month]*24*60*60
+
 quota_rate = quota/seconds_in_the_month
-Nlimit = sum(x > start_of_month) + 1
-use_at_start_of_month = y[-Nlimit]
+Nlimit = sum(x < start_of_month)-1
+
+#dydx = (y[-Nlimit+1]-y[-Nlimit])/(x[-Nlimit+1]-x[-Nlimit])
+dydx = (y[Nlimit+1]-y[Nlimit])/(x[Nlimit+1]-x[Nlimit])
+use_at_start_of_month = y[Nlimit+1] - (x[Nlimit+1]-start_of_month)*dydx
 
 limit = use_at_start_of_month + (x - start_of_month) * quota/seconds_in_the_month
 
@@ -99,9 +105,12 @@ plot((x[:]-start_of_month)  /xunit['seconds'], (y[:]-use_at_start_of_month)  /yu
 plot((x[-N:]-start_of_month)/xunit['seconds'], (y[-N:]-use_at_start_of_month)/yunit['MBs'], '.-b')
 
 plot([0, seconds_in_the_month/xunit['seconds']], [0, quota/yunit['MBs']], 'r')
+
 xlim([0, 1.1*(x[-1]-start_of_month)/xunit['seconds']])
-#ylim([0, y[-1]-use_at_start_of_month])
 ylim([0, 1.1*max([quota_rate*(x[-1]-start_of_month), y[-1]-use_at_start_of_month])/yunit['MBs']])
+
+#ylim([0, y[-1]-use_at_start_of_month])
+
 xlabel('Time/%s' % xunit['name'])
 ylabel('Data/%s' % yunit['name'])
 
